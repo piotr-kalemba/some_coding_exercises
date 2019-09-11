@@ -1,26 +1,30 @@
 from collections import deque
 
-def compute_rpn(string):
+def compute_rpn(r_p_n):
     stack = deque()
-    terms = string.split()
+    terms = r_p_n.split()
     for term in terms:
-        if term == '+':
-            stack.append(stack.pop() + stack.pop())
-        elif term == '*':
-            stack.append(stack.pop() * stack.pop())
-        elif term == '-':
-            value_1 = stack.pop()
-            stack.append(stack.pop() - value_1)
-        elif term == '/':
-            value_1 = stack.pop()
-            if value_1 == 0:
-                return None
-            stack.append(stack.pop() / value_1)
-        else:
-            stack.append(float(term))
+        try:
+            if term == '+':
+                stack.append(stack.pop() + stack.pop())
+            elif term == '*':
+                stack.append(stack.pop() * stack.pop())
+            elif term == '-':
+                value_1 = stack.pop()
+                stack.append(stack.pop() - value_1)
+            elif term == '/':
+                value_1 = stack.pop()
+                stack.append(stack.pop() / value_1)
+            else:
+                stack.append(float(term))
+        except ZeroDivisionError:
+            print("Zero Division Error")
+            return None
+        except Exception:
+            print("Invalid Input Expression")
+            return None
 
-    result = stack.pop()
-    return result
+    return stack.pop()
 
 print(compute_rpn("2 3 7 4 + 5 2 - / * +"))
-print(compute_rpn("2 0 /"))
+print(compute_rpn("2 + 2 /"))

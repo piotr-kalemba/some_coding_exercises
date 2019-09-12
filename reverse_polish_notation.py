@@ -9,7 +9,7 @@ def valid_rpn(r_p_n):
                 stack.pop()
             else:
                 stack.append(float(term))
-        x = float(stack.pop())
+        stack.pop()
         if stack:
             return False
     except Exception:
@@ -72,5 +72,6 @@ nn = rpn_to_nn('2 3 7 4 + 5 2 - / * +')
 print(nn)
 nn = rpn_to_nn('2 2 + 3 3 + 4 4 + * /')
 print(nn)
-nn = rpn_to_nn('2 2 2 +')
-print(nn)
+f = valid_rpn('1 1 1 +')
+print(f)
+

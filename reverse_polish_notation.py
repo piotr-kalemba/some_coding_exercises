@@ -67,11 +67,38 @@ def rpn_to_nn(r_p_n):
 
     return stack.pop()[1:-1]
 
+def space_out(nn):
+    nn = list(f'({nn})')
+    indices_to_replace = [index for index in range(len(nn)) if nn[index] == '(' or nn[index] == ')']
+    for index in indices_to_replace:
+        if nn[index] == '(':
+            nn[index] = '( '
+        else:
+            nn[index] = ' )'
+    return ''.join(nn)
 
-nn = rpn_to_nn('2 3 7 4 + 5 2 - / * +')
-print(nn)
-nn = rpn_to_nn('2 2 + 3 3 + 4 4 + * /')
-print(nn)
-f = valid_rpn('1 1 1 +')
-print(f)
 
+def nn_to_rpn(nn):
+    stack = deque()
+    nn = space_out(nn)
+    terms = nn.split()
+    for term in terms:
+        if term == '(':
+            continue
+        elif term == ')':
+            term_1 = stack.pop()
+            term_2 = stack.pop()
+            term_3 = stack.pop()
+            stack.append(f'{term_3} {term_1} {term_2}')
+        else:
+            stack.append(str(term))
+    return stack.pop()
+
+
+if __name__ == '__main__':
+    nn = rpn_to_nn('2 3 7 4 + 5 2 - / * +')
+    print(nn)
+    nn = rpn_to_nn('2 2 + 3 3 + 4 4 + * /')
+    print(nn)
+    f = valid_rpn('1 1 1 +')
+    print(f)

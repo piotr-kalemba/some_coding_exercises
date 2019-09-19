@@ -1,5 +1,6 @@
 from collections import deque
 
+
 def valid_rpn(r_p_n):
     stack = deque()
     terms = r_p_n.split()
@@ -12,11 +13,14 @@ def valid_rpn(r_p_n):
         stack.pop()
         if stack:
             return False
-    except Exception:
+    except IndexError:
+        return False
+    except ValueError:
         return False
     return True
 
-def compute_rpn(r_p_n):
+
+def evaluate_rpn(r_p_n):
     stack = deque()
     terms = r_p_n.split()
     if not valid_rpn(r_p_n):
@@ -41,6 +45,7 @@ def compute_rpn(r_p_n):
         return None
 
     return stack.pop()
+
 
 def rpn_to_nn(r_p_n):
     stack = deque()
@@ -67,20 +72,72 @@ def rpn_to_nn(r_p_n):
 
     return stack.pop()[1:-1]
 
-def space_out(nn):
-    nn = list(f'({nn})')
-    indices_to_replace = [index for index in range(len(nn)) if nn[index] == '(' or nn[index] == ')']
+
+def space_out(n_n):
+
+    indices_to_replace = [index for index in range(len(n_n)) if n_n[index] in {'(', ')', '+', '*','-','/'}]
     for index in indices_to_replace:
-        if nn[index] == '(':
-            nn[index] = '( '
+        if n_n[index] == '(':
+            n_n[index] = '( '
+        elif n_n[index] == ')':
+            n_n[index] = ' )'
         else:
-            nn[index] = ' )'
-    return ''.join(nn)
+            n_n[index] = f' {n_n[index]} '
+    return ''.join(n_n)
 
 
-def nn_to_rpn(nn):
+def brackets_number(expr):
+    return expr.count('(')
+
+
+def operations_number(expr):
+    return expr.count('+') + expr.count('-') + expr.count('*') + expr.count('/')
+
+
+def valid_nn(n_n):
     stack = deque()
-    nn = space_out(nn)
+    nn = space_out(n_n)
+    if brackets_number(n_n) != operations_number(n_n):
+        nn = f'( {nn} )'
+    terms = nn.split()
+    try:
+        for term in terms:
+            if term == ')':
+                stack.pop()
+                term_1 = stack.pop()
+                if term_1 != '#':
+                    return False
+                stack.pop()
+                term_2 = stack.pop()
+                if term_2 != '(':
+                    return False
+                stack.append('term')
+            elif term == '(':
+                stack.append('(')
+            elif term in {'+', '*', '-', '/'}:
+                stack.append('#')
+            else:
+                stack.append(float(term))
+        last = stack.pop()
+        if last != 'term':
+            return False
+        if stack:
+            return False
+    except IndexError:
+        return False
+    except ValueError:
+        return False
+    return True
+
+
+def nn_to_rpn(n_n):
+    stack = deque()
+    if not valid_nn(n_n):
+        print("Invalid input!")
+        return None
+    nn = space_out(n_n)
+    if brackets_number(nn) != operations_number(nn):
+        nn = f' {nn} '
     terms = nn.split()
     for term in terms:
         if term == '(':
@@ -93,6 +150,12 @@ def nn_to_rpn(nn):
         else:
             stack.append(str(term))
     return stack.pop()
+
+
+def evaluate_nn(n_n):
+    r_p_n = nn_to_rpn(n_n)
+    if r_p_n:
+        return evaluate_rpn(r_p_n)
 
 
 if __name__ == '__main__':

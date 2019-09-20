@@ -1,13 +1,29 @@
 from collections import deque
 
 
+def space_out(expr):
+    expr = list(expr)
+    indices_to_replace = [index for index in range(len(expr)) if expr[index] in {'(', ')', '+', '*','-','/'}]
+    for index in indices_to_replace:
+        if expr[index] == '(':
+            expr[index] = '( '
+        elif expr[index] == ')':
+            expr[index] = ' )'
+        else:
+            expr[index] = f' {expr[index]} '
+    return ''.join(expr)
+
+
 def valid_rpn(r_p_n):
     stack = deque()
+    r_p_n = space_out(r_p_n)
     terms = r_p_n.split()
     try:
         for term in terms:
             if term in {'+', '*', '-', '/'}:
                 stack.pop()
+                if not stack:
+                    return False
             else:
                 stack.append(float(term))
         stack.pop()
@@ -22,6 +38,7 @@ def valid_rpn(r_p_n):
 
 def evaluate_rpn(r_p_n):
     stack = deque()
+    r_p_n = space_out(r_p_n)
     terms = r_p_n.split()
     if not valid_rpn(r_p_n):
         print('Invalid input')
@@ -49,6 +66,7 @@ def evaluate_rpn(r_p_n):
 
 def rpn_to_nn(r_p_n):
     stack = deque()
+    r_p_n = space_out(r_p_n)
     terms = r_p_n.split()
     if not valid_rpn(r_p_n):
         print('Invalid input')
@@ -71,19 +89,6 @@ def rpn_to_nn(r_p_n):
             stack.append(str(term))
 
     return stack.pop()[1:-1]
-
-
-def space_out(n_n):
-
-    indices_to_replace = [index for index in range(len(n_n)) if n_n[index] in {'(', ')', '+', '*','-','/'}]
-    for index in indices_to_replace:
-        if n_n[index] == '(':
-            n_n[index] = '( '
-        elif n_n[index] == ')':
-            n_n[index] = ' )'
-        else:
-            n_n[index] = f' {n_n[index]} '
-    return ''.join(n_n)
 
 
 def brackets_number(expr):
@@ -136,8 +141,8 @@ def nn_to_rpn(n_n):
         print("Invalid input!")
         return None
     nn = space_out(n_n)
-    if brackets_number(nn) != operations_number(nn):
-        nn = f' {nn} '
+    if brackets_number(nn) == operations_number(nn) - 1:
+        nn = f'( {nn} )'
     terms = nn.split()
     for term in terms:
         if term == '(':
@@ -155,13 +160,10 @@ def nn_to_rpn(n_n):
 def evaluate_nn(n_n):
     r_p_n = nn_to_rpn(n_n)
     if r_p_n:
-        return evaluate_rpn(r_p_n)
+        try:
+            return evaluate_rpn(r_p_n)
+        except ZeroDivisionError:
+            print("Zero Division Error!")
+            return None
 
 
-if __name__ == '__main__':
-    nn = rpn_to_nn('2 3 7 4 + 5 2 - / * +')
-    print(nn)
-    nn = rpn_to_nn('2 2 + 3 3 + 4 4 + * /')
-    print(nn)
-    f = valid_rpn('1 1 1 +')
-    print(f)

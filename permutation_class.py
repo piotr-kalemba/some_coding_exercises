@@ -1,0 +1,71 @@
+class Permutation:
+
+    def __init__(self, seq):
+        """a list of the numbers from 0 up to some positive integer must be passed as
+        seq parameter of the constructor"""
+        self.seq = [int(seq[i]) for i in range(len(seq))]
+        self.perm_dict = {i:self.seq[i] for i in range(len(self.seq))}
+
+    @classmethod
+    def from_dict(cls, perm_dict):
+        """the method allows creating the permutation object from a dictionary"""
+        seq = []
+        for i in range(len(perm_dict)):
+            seq.append(perm_dict[i])
+        return cls(seq)
+
+    def __mul__(self, other):
+        """the method returns the composition of two permutations"""
+        self_dict = self.perm_dict
+        other_dict = other.perm_dict
+        if len(self_dict) != len(other_dict):
+            return None
+        new_dict = {}
+        for i in range(len(self_dict)):
+            new_dict[i] = self_dict[other_dict[i]]
+        return Permutation.from_dict(new_dict)
+
+    def inverse(self):
+        """the method returns the inverse of the permutation"""
+        self_dict = self.perm_dict
+        new_dict = {}
+        for key, item in self_dict.items():
+            new_dict[item] = key
+        return Permutation.from_dict(new_dict)
+
+    def canonical_cycle_notation(self):
+        """the method returns the permutation in the canonical cycle notation"""
+        self_dict = self.perm_dict
+        support = set()
+        cycles = []
+
+        while len(support) < len(self.seq):
+            stop = max(set(self.seq) - support)
+            if self_dict[stop] == stop:
+                cycles.append([stop])
+                support.add(stop)
+            else:
+                orbit = self_dict[stop]
+                cycle = [stop, orbit]
+                while orbit != stop:
+                    orbit = self_dict[orbit]
+                    if orbit != stop:
+                        cycle.append(orbit)
+                cycles.append(cycle)
+                support |= set(cycle)
+        cycles.sort()
+
+        return tuple([tuple(cycle) for cycle in cycles])
+
+    def __str__(self):
+        line_1 = " ".join([str(i) for i in sorted(list(self.perm_dict.keys()))])
+        line_2 = " ".join([str(self.perm_dict[i]) for i in range(len(self.perm_dict))])
+        return " /{}\ \n \{}/".format(line_1, line_2)
+
+
+
+
+
+
+
+

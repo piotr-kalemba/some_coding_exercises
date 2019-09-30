@@ -57,6 +57,25 @@ class Permutation:
 
         return tuple([tuple(cycle) for cycle in cycles])
 
+    def type_list(self):
+        """the function returns the permutation type as a list"""
+        lengths = [len(cycle) for cycle in self.canonical_cycle_notation()]
+        res = [(val, lengths.count(val)) for val in range(1, len(self.seq) + 1) if lengths.count(val) != 0]
+        res.sort()
+        return res
+
+    def type(self):
+        """the function returns the permutation type as a string"""
+        return "[{}]".format(", ".join([f"{val}^{num}" for val, num in self.type_list()]))
+
+    def sign(self):
+        """the method returns the sign of the permutation"""
+        sign = 1
+        for cycle in self.canonical_cycle_notation():
+            if len(cycle) % 2 == 0:
+                sign = -sign
+        return sign
+
     def __str__(self):
         line_1 = " ".join([str(i) for i in sorted(list(self.perm_dict.keys()))])
         line_2 = " ".join([str(self.perm_dict[i]) for i in range(len(self.perm_dict))])

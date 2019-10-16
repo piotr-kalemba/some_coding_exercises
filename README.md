@@ -1,4 +1,4 @@
-#My_Coding_Exercises
+# My_Coding_Exercises
 
 The repository contains a few python scripts containing some code that can be treated as
 coding exercises.

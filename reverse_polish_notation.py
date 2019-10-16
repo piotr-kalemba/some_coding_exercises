@@ -3,7 +3,7 @@ from collections import deque
 
 def space_out(expr):
     expr = list(expr)
-    indices_to_replace = [index for index in range(len(expr)) if expr[index] in {'(', ')', '+', '*','-','/'}]
+    indices_to_replace = [index for index in range(len(expr)) if expr[index] in list('()+*-/')]
     for index in indices_to_replace:
         if expr[index] == '(':
             expr[index] = '( '
@@ -20,7 +20,7 @@ def valid_rpn(r_p_n):
     terms = r_p_n.split()
     try:
         for term in terms:
-            if term in {'+', '*', '-', '/'}:
+            if term in list('+*-/'):
                 stack.pop()
                 if not stack:
                     return False
@@ -73,18 +73,9 @@ def rpn_to_nn(r_p_n):
         return None
 
     for term in terms:
-        if term == '+':
+        if term in list('+*-/'):
             value_1 = stack.pop()
-            stack.append(f'({stack.pop()} + {value_1})')
-        elif term == '*':
-            value_1 = stack.pop()
-            stack.append(f'({stack.pop()} * {value_1})')
-        elif term == '-':
-            value_1 = stack.pop()
-            stack.append(f'({stack.pop()} - {value_1})')
-        elif term == '/':
-            value_1 = stack.pop()
-            stack.append(f'({stack.pop()} / {value_1})')
+            stack.append(f'({stack.pop()} {term} {value_1})')
         else:
             stack.append(str(term))
 
@@ -119,7 +110,7 @@ def valid_nn(n_n):
                 stack.append('term')
             elif term == '(':
                 stack.append('(')
-            elif term in {'+', '*', '-', '/'}:
+            elif term in list('+*-/'):
                 stack.append('#')
             else:
                 stack.append(float(term))

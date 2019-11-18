@@ -65,7 +65,7 @@ def find_non_zero(a, i, n):
     return i + j
 
 
-def det_frac(a):
+def det(a):
     n = a.shape[0]
     sign = 1
     for i in range(n):
@@ -88,12 +88,34 @@ def show_array(a):
     print(s)
 
 
-a = np.array(
-    [Fraction(0, 1), Fraction(1, 2), Fraction(2, 1), Fraction(0, 1), Fraction(1, 1), Fraction(3, 2), Fraction(-1, 1),
-     Fraction(1, 1), Fraction(2, 1), Fraction(1, 1), Fraction(6, 1), Fraction(0, 1), Fraction(0, 1),
-     Fraction(1, 1), Fraction(-1, 1), Fraction(1, 3)])
-a = a.reshape((4,4))
-show_array(a)
-f = det_frac(a)
-print(f)
+def inserted_column(a, i, v):
+    c = a.copy()
+    c[:, i] = v
+    return c
+
+
+def find_solutions(equations):
+    n = equations.shape[0]
+    a = equations[:, :-1]
+    b = equations[:, -1]
+    if det(a).is_zero():
+        print('The system is either inconsistent or has no unique solution.')
+        return None
+    denominator = det(a).inverse()
+    return np.array([str(det(inserted_column(a, i, b)) * denominator) for i in range(n)])
+
+def solve_system(equations):
+    solutions = find_solutions(equations)
+    for i in range(equations.shape[0]):
+        print(f'x[{i}] = {solutions[i]}')
+
+equations = np.array(
+    [Fraction(0, 1), Fraction(1, 2), Fraction(2, 1), Fraction(0, 1), Fraction(1, 1),
+     Fraction(1, 1), Fraction(3, 2), Fraction(-1, 1), Fraction(1, 1), Fraction(2, 1),
+     Fraction(2, 1), Fraction(1, 1), Fraction(6, 1), Fraction(0, 1), Fraction(3, 1),
+     Fraction(0, 1), Fraction(1, 1), Fraction(-1, 1), Fraction(1, 3), Fraction(4, 1) ])
+equations = equations.reshape((4,5))
+
+solve_system(equations)
+
 

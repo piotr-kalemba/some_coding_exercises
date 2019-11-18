@@ -13,3 +13,4 @@ mentioned above.
 The file permutation_class.py contains a class for the representation of permutations. Methods implemented there allow
 one to inverse and compose permutations and, moreover, to obtain the canonical cycle notation of a permutation. The file
 permutations.py contains a function generating all the permutations of a given list of items.
+

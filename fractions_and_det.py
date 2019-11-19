@@ -133,10 +133,10 @@ def check_solutions(equations, solutions):
     return True
 
 equations = np.array(
-    [Fraction(0, 1), Fraction(1, 2), Fraction(2, 1), Fraction(0, 1), Fraction(1, 1),
-     Fraction(1, 1), Fraction(3, 2), Fraction(-1, 1), Fraction(1, 1), Fraction(2, 1),
-     Fraction(2, 1), Fraction(1, 1), Fraction(6, 1), Fraction(0, 1), Fraction(3, 1),
-     Fraction(0, 1), Fraction(1, 1), Fraction(-1, 1), Fraction(1, 3), Fraction(4, 1)])
+    [Fraction(0, 1), Fraction(1, 2), Fraction(2, 1), Fraction(0, 1), Fraction(1, 2),
+     Fraction(1, 1), Fraction(3, 2), Fraction(-1, 1), Fraction(1, 1), Fraction(2, 3),
+     Fraction(2, 1), Fraction(1, 1), Fraction(6, 1), Fraction(0, 1), Fraction(3, 4),
+     Fraction(0, 1), Fraction(1, 1), Fraction(-1, 1), Fraction(1, 3), Fraction(2, 1)])
 equations = equations.reshape((4,5))
 
 

@@ -14,3 +14,9 @@ The file permutation_class.py contains a class for the representation of permuta
 one to inverse and compose permutations and, moreover, to obtain the canonical cycle notation of a permutation. The file
 permutations.py contains a function generating all the permutations of a given list of items.
 
+The file fractions_and_det.py provides class for the representation of fractions and implements as methods basic 
+arithmetical operations on fractions. Moreover, the det (determinant) function is defined for computing determinants of 
+matrices with fractional values, whose value is a fraction as well so no rounding error is involved. The value of the
+det is computed by an algorithm that transforms the initial matrix into an upper triangular matrix. The complexity of
+the algorithm is O(n^2), where n is the number of rows (or columns) in the matrix.
+Some functions implementing Cramer method for solving systems of linear equations are provided based on the det function.

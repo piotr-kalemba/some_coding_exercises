@@ -27,7 +27,7 @@ letter -> <sequence_of_letters>. The function L_deterministic_generator takes tw
 and rules (a list of production rules) and generates successively words (sequences of letters) each of which is derived 
 according to the production rules from the previous one.
 The function L_random_generator represents so called stochastic L-system, where to each letter there is assigned a
-set of production rules each one with a given probability (the sum of the probabilities is equal to 1). The 'rules'
+set of production rules - each production rule with a given probability (the sum of the probabilities is equal to 1). The 'rules'
 parameter in the function is supposed to be a list of tuples, each tuple consisting of a sequence and its weight (instead of
 direct probability - relevant probabilities are computed from the weights). The rule that is at a given moment applied
 in rewriting the current word is chosen with the corresponding probability   

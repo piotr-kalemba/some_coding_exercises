@@ -20,3 +20,14 @@ matrices with fractional values, whose value is a fraction as well so no roundin
 det is computed by an algorithm that transforms the initial matrix into an upper triangular matrix. The complexity of
 the algorithm is O(n^2), where n is the number of rows (or columns) in the matrix.
 Some functions implementing Cramer method for solving systems of linear equations are provided based on the det function.
+
+The file L-systems.py provides generators for Lindemayer systems (aka L-systems). Such a system is an automaton that transforms
+every letter (from a given alphabet) into sequence of letters according to some fixed set of production rules of the form
+<letter> --> <sequence_of_letters>. The function L_deterministic_generator takes two arguments: start (initial sequence of letters)
+and rules (a list of production rules) and generates successively words (sequences of letters) each of which is derived 
+according to the production rules from the previous one.
+The function L_random_generator represents so called stochastic L-system, where to each letter there is assigned a
+set of production rules each one with a given probability (the sum of the probabilities is equal to 1). The 'rules'
+parameter in the function is supposed to be a list of tuples, each tuple consisting of a sequence and its weight (instead of
+direct probability - relevant probabilities are computed from the weights). The rule that is at a given moment applied
+in rewriting the current word is chosen with the corresponding probability   

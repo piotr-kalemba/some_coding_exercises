@@ -6,15 +6,17 @@ def find_partition(graph, vertex):
     color = {v: None for v in graph.vertices()}
     color[vertex] = 0
     stack = [vertex]
+    visited = [vertex]
     while stack:
-        v = stack.pop()
-        for u in g[v]:
-            if color[u] is None:
-                color[u] = 1 - color[v]
-                stack.append(u)
-            elif color[u] == color[v]:
+        top = stack.pop()
+        for v in g[top]:
+            if color[v] is None:
+                color[v] = 1 - color[top]
+                stack.append(v)
+                visited.append(v)
+            elif color[v] == color[top]:
                 return None
-    return {v for v in graph.vertices() if color[v] == 0}, {v for v in graph.vertices() if color[v] == 1}
+    return {v for v in visited if color[v] == 0}, {v for v in visited if color[v] == 1}
 
 
 def bipartite_graph(graph):
@@ -45,8 +47,6 @@ if __name__ == '__main__':
         'b': ['2', '4'],
         'c': ['3'],
         'd': ['3', '5'],
-        'x': ['y'],
-        'y': ['x']
     }
     graph = Graph(g)
     p, q = bipartite_graph(graph)
